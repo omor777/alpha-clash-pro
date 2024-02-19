@@ -6,7 +6,11 @@
 //   playGround.classList.remove("hidden");
 // }
 
+const audio = new Audio();
+let isGamePlayOn = false;
+
 function handleKeyboardButtonPress(event) {
+  if (!isGamePlayOn) return;
   const playerPressed = event.key;
 
   // stop the game when player press 'Esc'
@@ -20,6 +24,8 @@ function handleKeyboardButtonPress(event) {
 
   // check matched or not
   if (playerPressed === expectedAlphabet) {
+    audio.src = "../audio/success.mp3";
+    audio.play();
     const currentScore = getTextElementValueById("current-score");
     const updatedScore = currentScore + 1;
     setElementValueById("current-score", updatedScore);
@@ -33,6 +39,8 @@ function handleKeyboardButtonPress(event) {
     removerBackgroundColorById(expectedAlphabet);
     continueGame();
   } else {
+    audio.src = "../audio/fail.mp3";
+    audio.play();
     const currentLife = getTextElementValueById("current-life");
     const updatedLife = currentLife - 1;
     setElementValueById("current-life", updatedLife);
@@ -61,6 +69,7 @@ function continueGame() {
 }
 
 function play() {
+  isGamePlayOn = !isGamePlayOn;
   // hide everything show only the playground
   hideElementById("home-screen");
   showElementById("play-ground");
@@ -82,4 +91,6 @@ function gameOver() {
 
   const currentAlphabet = getElementTextById("current-alphabet");
   removerBackgroundColorById(currentAlphabet);
+
+  isGamePlayOn = !isGamePlayOn;
 }
